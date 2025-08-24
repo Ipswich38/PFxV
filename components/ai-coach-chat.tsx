@@ -1,14 +1,13 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Send, Bot, User, Lightbulb, Dumbbell, Apple, Target } from "lucide-react"
+import { Send, Bot, User, Lightbulb, Dumbbell, Apple, Target, Loader2 } from "lucide-react"
 
 interface Message {
   id: string
@@ -31,192 +30,39 @@ const quickActions: QuickAction[] = [
     id: "1",
     label: "Form Check",
     icon: Dumbbell,
-    prompt: "Can you check my form on bench press?",
+    prompt: "Can you check my form on bench press and give me specific cues?",
     category: "form",
   },
   {
     id: "2",
     label: "Exercise Substitute",
     icon: Target,
-    prompt: "I can't do squats today, what's a good substitute?",
+    prompt: "I can't do squats today due to knee discomfort, what's a good substitute?",
     category: "workout",
   },
   {
     id: "3",
     label: "Nutrition Advice",
     icon: Apple,
-    prompt: "What should I eat post-workout for muscle recovery?",
+    prompt: "What should I eat post-workout for optimal muscle recovery and growth?",
     category: "nutrition",
   },
   {
     id: "4",
     label: "Motivation",
     icon: Lightbulb,
-    prompt: "I'm feeling unmotivated today, help me get pumped!",
+    prompt: "I'm feeling unmotivated and considering skipping my workout today. Help me get back on track!",
     category: "motivation",
   },
 ]
-
-// Mock AI responses based on categories and keywords
-const getAIResponse = (userMessage: string): { content: string; category: string } => {
-  const message = userMessage.toLowerCase()
-
-  // Form-related responses
-  if (message.includes("form") || message.includes("technique")) {
-    return {
-      content: `Great question about form! Here are key points for proper technique:
-
-🎯 **Key Form Cues:**
-• Keep your core engaged throughout the movement
-• Maintain neutral spine alignment
-• Control the eccentric (lowering) phase
-• Focus on the target muscle group
-
-**Common Mistakes to Avoid:**
-• Rushing through reps
-• Using momentum instead of muscle control
-• Neglecting proper breathing pattern
-
-Would you like me to break down the specific exercise you're working on? I can provide detailed cues for better performance and injury prevention.`,
-      category: "form",
-    }
-  }
-
-  // Substitute exercises
-  if (message.includes("substitute") || message.includes("replace") || message.includes("can't do")) {
-    return {
-      content: `No problem! Here are some excellent alternatives:
-
-🔄 **Exercise Substitutions:**
-• **Squats** → Bulgarian split squats, goblet squats, or leg press
-• **Bench Press** → Push-ups, dumbbell press, or chest dips
-• **Deadlifts** → Romanian deadlifts, hip thrusts, or kettlebell swings
-• **Pull-ups** → Lat pulldowns, inverted rows, or resistance band pulls
-
-**Selection Criteria:**
-✅ Same movement pattern
-✅ Similar muscle groups
-✅ Matches your available equipment
-
-What specific exercise are you looking to substitute? I can give you more targeted alternatives based on your goals and equipment.`,
-      category: "workout",
-    }
-  }
-
-  // Nutrition advice
-  if (
-    message.includes("nutrition") ||
-    message.includes("eat") ||
-    message.includes("food") ||
-    message.includes("diet")
-  ) {
-    return {
-      content: `Excellent nutrition question! Here's what I recommend:
-
-🍎 **Post-Workout Nutrition (within 30-60 min):**
-• **Protein:** 20-30g (chicken, fish, protein shake, Greek yogurt)
-• **Carbs:** 30-60g (rice, banana, oats, sweet potato)
-• **Hydration:** 16-24oz water + electrolytes if intense session
-
-**Daily Nutrition Principles:**
-• Eat 0.8-1g protein per lb bodyweight
-• Include vegetables with every meal
-• Time carbs around workouts
-• Stay hydrated (half your bodyweight in oz)
-
-**Sample Post-Workout Meals:**
-• Protein shake + banana
-• Greek yogurt + berries + granola
-• Chicken + rice + vegetables
-
-What's your primary goal? I can tailor nutrition advice for muscle building, fat loss, or performance.`,
-      category: "nutrition",
-    }
-  }
-
-  // Motivation and mindset
-  if (
-    message.includes("motivat") ||
-    message.includes("pump") ||
-    message.includes("tired") ||
-    message.includes("lazy")
-  ) {
-    return {
-      content: `I hear you! Everyone has those days. Let's get you fired up! 🔥
-
-💪 **Remember Your WHY:**
-• You started this journey for a reason
-• Every rep is building a stronger, healthier you
-• Consistency beats perfection every time
-
-**Quick Motivation Boost:**
-🎯 Focus on just showing up - that's 80% of the battle
-⚡ Start with 5 minutes - momentum builds momentum
-🏆 Celebrate small wins - they compound into big results
-💯 You're already stronger than when you started
-
-**Today's Mantra:** 
-*"I don't have to be perfect, I just have to be present."*
-
-What's one small thing you can do right now to move toward your goals? Even 10 push-ups or a 5-minute walk counts!`,
-      category: "motivation",
-    }
-  }
-
-  // Workout planning
-  if (message.includes("workout") || message.includes("routine") || message.includes("program")) {
-    return {
-      content: `Let's optimize your training! Here's my approach:
-
-🏋️ **Workout Structure:**
-• **Frequency:** 3-5 days/week depending on goals
-• **Duration:** 45-75 minutes per session
-• **Split:** Upper/Lower or Push/Pull/Legs for intermediate+
-
-**Key Principles:**
-✅ Progressive overload (gradually increase weight/reps)
-✅ Compound movements first (squats, deadlifts, presses)
-✅ 48-72 hours rest between training same muscle groups
-✅ Track your lifts to monitor progress
-
-**This Week's Focus:**
-• Master movement patterns before adding weight
-• Aim for 2-3 sets in reserve (RPE 7-8)
-• Include mobility work pre/post workout
-
-What's your current training experience and main goal? I can suggest a more specific program structure.`,
-      category: "workout",
-    }
-  }
-
-  // Default response
-  return {
-    content: `Thanks for reaching out! I'm here to help with all aspects of your fitness journey.
-
-🤖 **I can assist with:**
-• Workout programming and exercise selection
-• Form cues and technique improvements
-• Nutrition guidance and meal planning
-• Motivation and mindset coaching
-• Recovery and injury prevention
-• Progress tracking strategies
-
-**Popular Topics:**
-• "How do I improve my bench press?"
-• "What should I eat before/after workouts?"
-• "I'm plateauing, what should I change?"
-• "How do I stay consistent with training?"
-
-What specific area would you like to dive into? I'm here to provide personalized guidance based on your goals and current situation.`,
-    category: "general",
-  }
-}
 
 export default function AICoachChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      content: `Hey there! I'm your AI fitness coach. I'm here to help you with workouts, nutrition, form checks, and motivation. 
+      content: `Hey there! I'm your PFxV PowerCoach 💪 
+
+I'm here to help you crush your fitness goals with science-backed advice on training, nutrition, form, and mindset. Whether you're a beginner or seasoned athlete, I'll provide personalized guidance to help you get stronger, healthier, and more confident.
 
 What can I help you with today? Feel free to ask me anything about your fitness journey!`,
       sender: "coach",
@@ -237,7 +83,7 @@ What can I help you with today? Feel free to ask me anything about your fitness 
   }, [messages])
 
   const sendMessage = async (content: string) => {
-    if (!content.trim()) return
+    if (!content.trim() || isTyping) return
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -250,20 +96,50 @@ What can I help you with today? Feel free to ask me anything about your fitness 
     setInputValue("")
     setIsTyping(true)
 
-    // Simulate AI thinking time
-    setTimeout(() => {
-      const aiResponse = getAIResponse(content)
+    try {
+      const response = await fetch("/api/coach/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: content,
+          conversationHistory: messages.slice(-10), // Send last 10 messages for context
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to get AI response")
+      }
+
+      const data = await response.json()
+
       const coachMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: aiResponse.content,
+        content: data.content,
         sender: "coach",
         timestamp: new Date(),
-        category: aiResponse.category as any,
+        category: data.category,
       }
 
       setMessages((prev) => [...prev, coachMessage])
+    } catch (error) {
+      console.error("Error sending message:", error)
+
+      // Fallback message on error
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content:
+          "I'm having trouble connecting right now. Please try again in a moment. In the meantime, remember that consistency is key to reaching your fitness goals! 💪",
+        sender: "coach",
+        timestamp: new Date(),
+        category: "general",
+      }
+
+      setMessages((prev) => [...prev, errorMessage])
+    } finally {
       setIsTyping(false)
-    }, 1500)
+    }
   }
 
   const handleQuickAction = (action: QuickAction) => {
@@ -292,9 +168,9 @@ What can I help you with today? Feel free to ask me anything about your fitness 
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center space-x-2">
             <Bot className="w-5 h-5 text-primary" />
-            <span>AI Fitness Coach</span>
+            <span>PFxV PowerCoach</span>
             <Badge variant="secondary" className="ml-2">
-              Online
+              AI Powered
             </Badge>
           </CardTitle>
         </CardHeader>
@@ -311,6 +187,7 @@ What can I help you with today? Feel free to ask me anything about your fitness 
                 variant="outline"
                 size="sm"
                 onClick={() => handleQuickAction(action)}
+                disabled={isTyping}
                 className="flex items-center space-x-2 whitespace-nowrap bg-transparent"
               >
                 <Icon className="w-4 h-4" />
@@ -364,16 +241,9 @@ What can I help you with today? Feel free to ask me anything about your fitness 
               </AvatarFallback>
             </Avatar>
             <div className="bg-muted p-3 rounded-lg">
-              <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
-                <div
-                  className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
-                  style={{ animationDelay: "0.1s" }}
-                />
-                <div
-                  className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
-                  style={{ animationDelay: "0.2s" }}
-                />
+              <div className="flex items-center space-x-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span className="text-sm text-muted-foreground">PowerCoach is thinking...</span>
               </div>
             </div>
           </div>
@@ -387,12 +257,13 @@ What can I help you with today? Feel free to ask me anything about your fitness 
           <Input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask me about workouts, nutrition, form, or anything fitness-related..."
+            placeholder="Ask your PowerCoach about workouts, nutrition, form, motivation..."
             onKeyPress={(e) => e.key === "Enter" && sendMessage(inputValue)}
+            disabled={isTyping}
             className="flex-1"
           />
           <Button onClick={() => sendMessage(inputValue)} disabled={!inputValue.trim() || isTyping}>
-            <Send className="w-4 h-4" />
+            {isTyping ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
           </Button>
         </div>
       </div>
