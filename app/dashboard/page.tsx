@@ -154,57 +154,66 @@ export default function DashboardPage() {
               <img src="/images/pfxv-logo.png" alt="PFxV" className="w-32 h-32 object-contain" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">Hello, {user?.name || "David"}</h1>
-              <p className="text-slate-400 text-sm">Welcome back</p>
+              <h1 className="text-2xl font-bold text-white">Hello, {user?.email?.split("@")[0] || "Athlete"}</h1>
+              <p className="text-slate-400 text-sm">Welcome back to your fitness journey</p>
             </div>
           </div>
 
           <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 text-center">
             <div className="space-y-2">
-              <p className="text-slate-400 text-sm">Current Value</p>
-              <div className="text-4xl font-bold text-white">${(weeklyStats.totalVolume * 0.1).toFixed(0)}</div>
+              <p className="text-slate-400 text-sm">Weekly Volume</p>
+              <div className="text-4xl font-bold text-white">
+                {weeklyStats.totalVolume.toLocaleString()}
+                <span className="text-2xl text-slate-400">lbs</span>
+              </div>
               <p className="text-slate-400 text-xs">
-                +${(weeklyStats.completedWorkouts * 15).toFixed(0)} • Since last week
+                {weeklyStats.completedWorkouts} workouts • {weeklyStats.currentStreak} day streak
               </p>
             </div>
           </Card>
 
           <div className="grid grid-cols-2 gap-4">
-            <Card className="bg-[#c0d7dd] border-0 rounded-2xl p-4 relative cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl">
-              <div className="absolute top-2 left-2">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-[#1d1c21]" />
+            <Link href="/coach">
+              <Card className="bg-[#c0d7dd] border-0 rounded-2xl p-4 relative cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl">
+                <div className="absolute top-2 left-2">
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                    <Zap className="w-4 h-4 text-[#1d1c21]" />
+                  </div>
                 </div>
-              </div>
-              <div className="mt-8">
-                <div className="text-2xl font-bold text-[#1d1c21] mb-1">AI Coach</div>
-                <p className="text-[#1d1c21]/70 text-sm">Personal guidance</p>
-              </div>
-            </Card>
+                <div className="mt-8">
+                  <div className="text-2xl font-bold text-[#1d1c21] mb-1">AI Coach</div>
+                  <p className="text-[#1d1c21]/70 text-sm">Personal guidance</p>
+                </div>
+              </Card>
+            </Link>
 
-            <Card className="bg-[#e6dff1] border-0 rounded-2xl p-4 relative cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl">
-              <div className="absolute top-2 left-2">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <BookOpen className="w-4 h-4 text-[#1d1c21]" />
+            <Link href="/learn">
+              <Card className="bg-[#e6dff1] border-0 rounded-2xl p-4 relative cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl">
+                <div className="absolute top-2 left-2">
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                    <BookOpen className="w-4 h-4 text-[#1d1c21]" />
+                  </div>
                 </div>
-              </div>
-              <div className="mt-8">
-                <div className="text-2xl font-bold text-[#1d1c21] mb-1">Learn & Grow</div>
-                <p className="text-[#1d1c21]/70 text-sm">Knowledge base</p>
-              </div>
-            </Card>
+                <div className="mt-8">
+                  <div className="text-2xl font-bold text-[#1d1c21] mb-1">Learn & Grow</div>
+                  <p className="text-[#1d1c21]/70 text-sm">Knowledge base</p>
+                </div>
+              </Card>
+            </Link>
 
-            <Card className="bg-[#f2eee8] border-0 rounded-2xl p-4 relative cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl">
-              <div className="absolute top-2 left-2">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <BarChart3 className="w-4 h-4 text-[#1d1c21]" />
+            <Link href="/progress">
+              <Card className="bg-[#f2eee8] border-0 rounded-2xl p-4 relative cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl">
+                <div className="absolute top-2 left-2">
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                    <BarChart3 className="w-4 h-4 text-[#1d1c21]" />
+                  </div>
                 </div>
-              </div>
-              <div className="mt-8">
-                <div className="text-2xl font-bold text-[#1d1c21] mb-1">Track Progress</div>
-                <p className="text-[#1d1c21]/70 text-sm">Monitor gains</p>
-              </div>
-            </Card>
+                <div className="mt-8">
+                  <div className="text-2xl font-bold text-[#1d1c21] mb-1">Track Progress</div>
+                  <p className="text-[#1d1c21]/70 text-sm">Monitor gains</p>
+                </div>
+              </Card>
+            </Link>
 
             <Card className="bg-[#c0d7dd] border-0 rounded-2xl p-4 relative cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl">
               <div className="absolute top-2 left-2">
