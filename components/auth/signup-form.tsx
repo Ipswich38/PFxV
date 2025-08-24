@@ -109,7 +109,7 @@ export function SignupForm() {
             />
           </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
+          <Button type="submit" className="w-full" disabled={isLoading} variant="cta">
             {isLoading ? "Creating Account..." : "Create Account"}
           </Button>
         </form>

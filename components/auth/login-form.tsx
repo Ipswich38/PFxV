@@ -62,7 +62,7 @@ export function LoginForm() {
             />
           </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
+          <Button type="submit" className="w-full" disabled={isLoading} variant="cta">
             {isLoading ? "Signing in..." : "Sign In"}
           </Button>
         </form>

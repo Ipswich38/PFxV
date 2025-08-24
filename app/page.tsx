@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { TypingEffect } from "@/components/ui/typing-effect"
 
 export default function HomePage() {
   return (
@@ -9,19 +10,27 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Logo/Brand */}
           <div className="space-y-4">
-            <h1 className="text-6xl font-bold tracking-tight">
-              PF<span className="text-primary">x</span>V
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Your AI-powered fitness coach, teacher, and tracker. Personalized workouts that adapt to your progress.
-            </p>
+            <div className="flex justify-center">
+              <img
+                src="/images/pfxv-logo.png"
+                alt="PFxV Logo"
+                className="w-32 h-32 object-contain logo-3d logo-pulse"
+              />
+            </div>
+            <div className="text-sm text-muted-foreground max-w-2xl mx-auto min-h-[2rem] flex items-center justify-center">
+              <TypingEffect
+                text="Built with Science! Your AI-powered fitness coach, teacher, and tracker. Personalized workouts that adapt to your progress."
+                speed={30}
+                className="text-sm"
+              />
+            </div>
           </div>
 
           {/* Key Features */}
           <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <div className="bg-card p-6 rounded-lg border">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-2 hover:backdrop-blur-xl cursor-pointer group">
+              <div className="w-12 h-12 bg-cta/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-cta/20 transition-colors duration-300">
+                <svg className="w-6 h-6 text-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
@@ -31,9 +40,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="bg-card p-6 rounded-lg border">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-2 hover:backdrop-blur-xl cursor-pointer group">
+              <div className="w-12 h-12 bg-cta/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-cta/20 transition-colors duration-300">
+                <svg className="w-6 h-6 text-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -48,9 +57,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="bg-card p-6 rounded-lg border">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-2 hover:backdrop-blur-xl cursor-pointer group">
+              <div className="w-12 h-12 bg-cta/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-cta/20 transition-colors duration-300">
+                <svg className="w-6 h-6 text-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -68,7 +77,7 @@ export default function HomePage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="text-lg px-8">
+            <Button asChild size="lg" className="text-lg px-8" variant="cta">
               <Link href="/signup">Start Your Journey</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-lg px-8 bg-transparent">

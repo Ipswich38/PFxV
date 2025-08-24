@@ -102,7 +102,7 @@ export default function OnboardingFlow() {
                 >
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      step.id <= currentStep ? "bg-primary text-primary-foreground" : "bg-muted"
+                      step.id <= currentStep ? "bg-cta text-cta-foreground" : "bg-muted"
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -112,7 +112,7 @@ export default function OnboardingFlow() {
               )
             })}
           </div>
-          <Progress value={progress} className="h-2" />
+          <Progress value={progress} className="h-2" variant="cta" />
         </div>
 
         {/* Step Content */}
@@ -346,12 +346,12 @@ export default function OnboardingFlow() {
           </Button>
 
           {currentStep < steps.length ? (
-            <Button onClick={nextStep} className="flex items-center space-x-2">
+            <Button onClick={nextStep} className="flex items-center space-x-2" variant="cta">
               <span>Next</span>
               <ChevronRight className="w-4 h-4" />
             </Button>
           ) : (
-            <Button onClick={handleComplete} className="flex items-center space-x-2">
+            <Button onClick={handleComplete} className="flex items-center space-x-2" variant="cta">
               <span>Complete Setup</span>
               <ChevronRight className="w-4 h-4" />
             </Button>

@@ -152,11 +152,12 @@ export default function DashboardPage() {
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">
-                Welcome back{user?.name ? `, ${user.name}` : ""} to PF<span className="text-primary">x</span>V
-              </h1>
-              <p className="text-muted-foreground mt-1">Ready to crush today's workout?</p>
+            <div className="flex items-center space-x-4">
+              <img src="/images/pfxv-logo.png" alt="PFxV Logo" className="w-12 h-12 object-contain logo-3d" />
+              <div>
+                <h1 className="text-3xl font-bold">Welcome back{user?.name ? `, ${user.name}` : ""}</h1>
+                <p className="text-muted-foreground mt-1">Ready to crush today's workout?</p>
+              </div>
             </div>
             <Button onClick={() => setShowOnboarding(true)} variant="outline">
               Update Goals
@@ -164,7 +165,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Today's Workout */}
-          <Card className="border-primary">
+          <Card className="bg-white/10 backdrop-blur-md border border-cta/20 rounded-2xl">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -193,14 +194,16 @@ export default function DashboardPage() {
                 </span>
               </div>
               <Link href="/workout">
-                <Button className="w-full">Start Workout</Button>
+                <Button className="w-full" variant="cta">
+                  Start Workout
+                </Button>
               </Link>
             </CardContent>
           </Card>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">This Week</CardTitle>
               </CardHeader>
@@ -213,17 +216,17 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">Current Streak</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-primary">{weeklyStats.currentStreak}</div>
+                <div className="text-2xl font-bold text-cta">{weeklyStats.currentStreak}</div>
                 <p className="text-sm text-muted-foreground">Days active</p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">Total Volume</CardTitle>
               </CardHeader>
@@ -235,7 +238,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Recent Activity */}
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <TrendingUp className="w-5 h-5" />
@@ -246,7 +249,10 @@ export default function DashboardPage() {
               <div className="space-y-3">
                 {recentSessions.length > 0 ? (
                   recentSessions.map((session) => (
-                    <div key={session.id} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                    <div
+                      key={session.id}
+                      className="flex items-center justify-between p-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg"
+                    >
                       <div>
                         <div className="font-medium">{session.workout_name}</div>
                         <div className="text-sm text-muted-foreground">
