@@ -71,10 +71,20 @@ export default function OnboardingFlow() {
   }
 
   const handleComplete = () => {
+    console.log("[v0] Complete Setup button clicked")
     console.log("[v0] Onboarding completed with data:", data)
-    localStorage.setItem("pfxv_onboarding_data", JSON.stringify(data))
-    localStorage.setItem("pfxv_onboarding_completed", "true")
-    router.push("/dashboard")
+
+    try {
+      localStorage.setItem("pfxv_onboarding_data", JSON.stringify(data))
+      localStorage.setItem("pfxv_onboarding_completed", "true")
+      console.log("[v0] Data saved to localStorage successfully")
+
+      console.log("[v0] Attempting to navigate to dashboard...")
+      router.push("/dashboard")
+      console.log("[v0] Navigation command executed")
+    } catch (error) {
+      console.error("[v0] Error during completion:", error)
+    }
   }
 
   const progress = (currentStep / steps.length) * 100
