@@ -2,13 +2,15 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
+import { createBrowserClient } from "@supabase/ssr"
+import type { User as SupabaseUser } from "@supabase/supabase-js"
 
 interface User {
   id: string
   email: string
   name: string
-  fitnessLevel: "beginner" | "intermediate" | "advanced"
-  goals: string[]
+  fitnessLevel?: "beginner" | "intermediate" | "advanced"
+  goals?: string[]
 }
 
 interface AuthContextType {
@@ -25,70 +27,92 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  )
+
   useEffect(() => {
-    // Check for stored user session
-    const storedUser = localStorage.getItem("pfxv-user")
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      if (session?.user) {
+        await loadUserProfile(session.user)
+      }
+      setIsLoading(false)
     }
-    setIsLoading(false)
+
+    getSession()
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        await loadUserProfile(session.user)
+      } else {
+        setUser(null)
+      }
+      setIsLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
+
+  const loadUserProfile = async (supabaseUser: SupabaseUser) => {
+    const { data: profile } = await supabase.from("profiles").select("*").eq("id", supabaseUser.id).single()
+
+    const { data: onboarding } = await supabase.from("onboarding_data").select("*").eq("id", supabaseUser.id).single()
+
+    setUser({
+      id: supabaseUser.id,
+      email: supabaseUser.email!,
+      name: profile?.display_name || supabaseUser.email!.split("@")[0],
+      fitnessLevel: (onboarding?.experience_level as "beginner" | "intermediate" | "advanced") || "beginner",
+      goals: onboarding?.fitness_goals || [],
+    })
+  }
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Mock authentication - in real app, this would call your backend
-    if (email && password.length >= 6) {
-      const mockUser: User = {
-        id: "1",
-        email,
-        name: email.split("@")[0],
-        fitnessLevel: "intermediate",
-        goals: ["strength", "muscle-gain"],
-      }
-
-      setUser(mockUser)
-      localStorage.setItem("pfxv-user", JSON.stringify(mockUser))
-      setIsLoading(false)
-      return true
-    }
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
 
     setIsLoading(false)
-    return false
+    return !error
   }
 
   const signup = async (email: string, password: string, name: string): Promise<boolean> => {
     setIsLoading(true)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          display_name: name,
+        },
+      },
+    })
 
-    // Mock registration
-    if (email && password.length >= 6 && name) {
-      const newUser: User = {
-        id: Date.now().toString(),
-        email,
-        name,
-        fitnessLevel: "beginner",
-        goals: [],
-      }
-
-      setUser(newUser)
-      localStorage.setItem("pfxv-user", JSON.stringify(newUser))
-      setIsLoading(false)
-      return true
+    if (!error && data.user) {
+      // Create profile
+      await supabase.from("profiles").insert({
+        id: data.user.id,
+        display_name: name,
+      })
     }
 
     setIsLoading(false)
-    return false
+    return !error
   }
 
-  const logout = () => {
+  const logout = async () => {
+    await supabase.auth.signOut()
     setUser(null)
-    localStorage.removeItem("pfxv-user")
   }
 
   return <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>{children}</AuthContext.Provider>
