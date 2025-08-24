@@ -128,65 +128,70 @@ export default function ProgressTracking() {
   ]
 
   return (
-    <div className="min-h-screen bg-background p-4 pb-20 md:pb-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-4 pb-20 md:pb-4">
       <div className="max-w-6xl mx-auto space-y-6">
-        {/* Header */}
+        {/* Header with Logo */}
         <div className="text-center space-y-4">
-          <h1 className="text-3xl font-bold">Progress Tracking</h1>
-          <p className="text-muted-foreground">Your fitness journey visualized</p>
+          <div className="flex justify-center mb-4">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/20">
+              <img src="/images/pfxv-logo.png" alt="PFxV" className="h-12 w-auto" />
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-white">Progress Tracking</h1>
+          <p className="text-gray-300">Your fitness journey visualized</p>
         </div>
 
         {/* Key Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card>
+          <Card className="bg-emerald-500/20 backdrop-blur-md border-emerald-500/30 text-white">
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Flame className="w-5 h-5 text-orange-500" />
+                <Flame className="w-5 h-5 text-emerald-400" />
                 <div>
-                  <div className="text-2xl font-bold text-orange-500">{currentStreak}</div>
-                  <p className="text-sm text-muted-foreground">Day Streak</p>
+                  <div className="text-2xl font-bold text-emerald-400">{currentStreak}</div>
+                  <p className="text-sm text-emerald-200">Day Streak</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-purple-500/20 backdrop-blur-md border-purple-500/30 text-white">
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Activity className="w-5 h-5 text-blue-500" />
+                <Activity className="w-5 h-5 text-purple-400" />
                 <div>
-                  <div className="text-2xl font-bold text-blue-500">{totalWorkouts}</div>
-                  <p className="text-sm text-muted-foreground">Total Workouts</p>
+                  <div className="text-2xl font-bold text-purple-400">{totalWorkouts}</div>
+                  <p className="text-sm text-purple-200">Total Workouts</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-orange-500/20 backdrop-blur-md border-orange-500/30 text-white">
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <BarChart3 className="w-5 h-5 text-green-500" />
+                <BarChart3 className="w-5 h-5 text-orange-400" />
                 <div>
-                  <div className="text-2xl font-bold text-green-500">{totalVolume.toLocaleString()}</div>
-                  <p className="text-sm text-muted-foreground">Total Volume (lbs)</p>
+                  <div className="text-2xl font-bold text-orange-400">{totalVolume.toLocaleString()}</div>
+                  <p className="text-sm text-orange-200">Total Volume (lbs)</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-pink-500/20 backdrop-blur-md border-pink-500/30 text-white">
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <TrendingUp className="w-5 h-5 text-primary" />
+                <TrendingUp className="w-5 h-5 text-pink-400" />
                 <div>
                   <div className="flex items-center space-x-1">
-                    <span className="text-2xl font-bold text-primary">{currentWeight}</span>
-                    <div className="flex items-center text-green-500">
+                    <span className="text-2xl font-bold text-pink-400">{currentWeight}</span>
+                    <div className="flex items-center text-green-400">
                       <ChevronUp className="w-4 h-4" />
                       <span className="text-sm">+{weightChange}</span>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">Current Weight (lbs)</p>
+                  <p className="text-sm text-pink-200">Current Weight (lbs)</p>
                 </div>
               </div>
             </CardContent>
@@ -195,25 +200,49 @@ export default function ProgressTracking() {
 
         {/* Tabs for different tracking views */}
         <Tabs defaultValue="strength" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="strength">Strength</TabsTrigger>
-            <TabsTrigger value="body">Body Comp</TabsTrigger>
-            <TabsTrigger value="consistency">Consistency</TabsTrigger>
-            <TabsTrigger value="achievements">Achievements</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 bg-white/10 backdrop-blur-md border border-white/20">
+            <TabsTrigger
+              value="strength"
+              className="text-white data-[state=active]:bg-orange-500 data-[state=active]:text-white"
+            >
+              Strength
+            </TabsTrigger>
+            <TabsTrigger
+              value="body"
+              className="text-white data-[state=active]:bg-orange-500 data-[state=active]:text-white"
+            >
+              Body Comp
+            </TabsTrigger>
+            <TabsTrigger
+              value="consistency"
+              className="text-white data-[state=active]:bg-orange-500 data-[state=active]:text-white"
+            >
+              Consistency
+            </TabsTrigger>
+            <TabsTrigger
+              value="achievements"
+              className="text-white data-[state=active]:bg-orange-500 data-[state=active]:text-white"
+            >
+              Achievements
+            </TabsTrigger>
           </TabsList>
 
           {/* Strength Progress */}
           <TabsContent value="strength" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Strength Progression</h2>
+              <h2 className="text-xl font-semibold text-white">Strength Progression</h2>
               <div className="flex space-x-2">
                 {timeframes.map((timeframe) => (
                   <Button
                     key={timeframe.value}
-                    variant={selectedTimeframe === timeframe.value ? "default" : "outline"}
+                    variant={selectedTimeframe === timeframe.value ? "cta" : "outline"}
                     size="sm"
                     onClick={() => setSelectedTimeframe(timeframe.value)}
-                    className="bg-transparent"
+                    className={
+                      selectedTimeframe !== timeframe.value
+                        ? "bg-white/10 border-white/20 text-white hover:bg-white/20"
+                        : ""
+                    }
                   >
                     {timeframe.label}
                   </Button>
@@ -222,30 +251,33 @@ export default function ProgressTracking() {
             </div>
 
             {/* Personal Records */}
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Trophy className="w-5 h-5" />
+                <CardTitle className="flex items-center space-x-2 text-white">
+                  <Trophy className="w-5 h-5 text-orange-400" />
                   <span>Personal Records</span>
                 </CardTitle>
-                <CardDescription>Your best lifts and recent improvements</CardDescription>
+                <CardDescription className="text-gray-300">Your best lifts and recent improvements</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {mockPersonalRecords.map((record, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10"
+                    >
                       <div>
-                        <div className="font-medium">{record.exercise}</div>
-                        <div className="text-sm text-muted-foreground">
+                        <div className="font-medium text-white">{record.exercise}</div>
+                        <div className="text-sm text-gray-300">
                           {record.weight} lbs × {record.reps} reps
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="flex items-center space-x-1 text-green-500">
+                        <div className="flex items-center space-x-1 text-green-400">
                           <ChevronUp className="w-4 h-4" />
                           <span className="font-medium">+{record.improvement} lbs</span>
                         </div>
-                        <div className="text-xs text-muted-foreground">{record.date}</div>
+                        <div className="text-xs text-gray-400">{record.date}</div>
                       </div>
                     </div>
                   ))}
@@ -254,17 +286,17 @@ export default function ProgressTracking() {
             </Card>
 
             {/* Strength Chart Placeholder */}
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardHeader>
-                <CardTitle>Bench Press Progression</CardTitle>
-                <CardDescription>Weight progression over time</CardDescription>
+                <CardTitle className="text-white">Bench Press Progression</CardTitle>
+                <CardDescription className="text-gray-300">Weight progression over time</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-64 bg-muted rounded-lg flex items-center justify-center">
+                <div className="h-64 bg-white/5 rounded-lg flex items-center justify-center border border-white/10">
                   <div className="text-center space-y-2">
-                    <BarChart3 className="w-12 h-12 text-muted-foreground mx-auto" />
-                    <p className="text-muted-foreground">Interactive chart showing strength progression</p>
-                    <p className="text-sm text-muted-foreground">135 lbs → 150 lbs (+15 lbs in 30 days)</p>
+                    <BarChart3 className="w-12 h-12 text-orange-400 mx-auto" />
+                    <p className="text-gray-300">Interactive chart showing strength progression</p>
+                    <p className="text-sm text-gray-400">135 lbs → 150 lbs (+15 lbs in 30 days)</p>
                   </div>
                 </div>
               </CardContent>
@@ -273,67 +305,69 @@ export default function ProgressTracking() {
 
           {/* Body Composition */}
           <TabsContent value="body" className="space-y-6">
-            <h2 className="text-xl font-semibold">Body Composition</h2>
+            <h2 className="text-xl font-semibold text-white">Body Composition</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card>
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Weight</CardTitle>
+                  <CardTitle className="text-lg text-white">Weight</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold">{currentWeight} lbs</div>
-                  <div className="flex items-center space-x-1 text-green-500 mt-1">
+                  <div className="text-3xl font-bold text-white">{currentWeight} lbs</div>
+                  <div className="flex items-center space-x-1 text-green-400 mt-1">
                     <ChevronUp className="w-4 h-4" />
                     <span className="text-sm">+{weightChange} lbs this month</span>
                   </div>
                   <Progress value={75} className="mt-3" />
-                  <p className="text-xs text-muted-foreground mt-1">Goal: 185 lbs</p>
+                  <p className="text-xs text-gray-400 mt-1">Goal: 185 lbs</p>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Body Fat</CardTitle>
+                  <CardTitle className="text-lg text-white">Body Fat</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold">14.2%</div>
-                  <div className="flex items-center space-x-1 text-green-500 mt-1">
+                  <div className="text-3xl font-bold text-white">14.2%</div>
+                  <div className="flex items-center space-x-1 text-green-400 mt-1">
                     <ChevronDown className="w-4 h-4" />
                     <span className="text-sm">-1.0% this month</span>
                   </div>
                   <Progress value={60} className="mt-3" />
-                  <p className="text-xs text-muted-foreground mt-1">Goal: 12%</p>
+                  <p className="text-xs text-gray-400 mt-1">Goal: 12%</p>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Muscle Mass</CardTitle>
+                  <CardTitle className="text-lg text-white">Muscle Mass</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold">157 lbs</div>
-                  <div className="flex items-center space-x-1 text-green-500 mt-1">
+                  <div className="text-3xl font-bold text-white">157 lbs</div>
+                  <div className="flex items-center space-x-1 text-green-400 mt-1">
                     <ChevronUp className="w-4 h-4" />
                     <span className="text-sm">+{muscleGain} lbs this month</span>
                   </div>
                   <Progress value={80} className="mt-3" />
-                  <p className="text-xs text-muted-foreground mt-1">Goal: 165 lbs</p>
+                  <p className="text-xs text-gray-400 mt-1">Goal: 165 lbs</p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Body Composition Chart */}
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardHeader>
-                <CardTitle>Body Composition Trends</CardTitle>
-                <CardDescription>Track your body composition changes over time</CardDescription>
+                <CardTitle className="text-white">Body Composition Trends</CardTitle>
+                <CardDescription className="text-gray-300">
+                  Track your body composition changes over time
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-64 bg-muted rounded-lg flex items-center justify-center">
+                <div className="h-64 bg-white/5 rounded-lg flex items-center justify-center border border-white/10">
                   <div className="text-center space-y-2">
-                    <TrendingUp className="w-12 h-12 text-muted-foreground mx-auto" />
-                    <p className="text-muted-foreground">Body composition trend chart</p>
-                    <p className="text-sm text-muted-foreground">Weight ↑ | Body Fat ↓ | Muscle ↑</p>
+                    <TrendingUp className="w-12 h-12 text-orange-400 mx-auto" />
+                    <p className="text-gray-300">Body composition trend chart</p>
+                    <p className="text-sm text-gray-400">Weight ↑ | Body Fat ↓ | Muscle ↑</p>
                   </div>
                 </div>
               </CardContent>
@@ -342,64 +376,64 @@ export default function ProgressTracking() {
 
           {/* Consistency */}
           <TabsContent value="consistency" className="space-y-6">
-            <h2 className="text-xl font-semibold">Workout Consistency</h2>
+            <h2 className="text-xl font-semibold text-white">Workout Consistency</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Calendar className="w-5 h-5" />
+                  <CardTitle className="flex items-center space-x-2 text-white">
+                    <Calendar className="w-5 h-5 text-orange-400" />
                     <span>This Month</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span>Workouts Completed</span>
-                    <span className="font-bold">18/20</span>
+                    <span className="text-gray-300">Workouts Completed</span>
+                    <span className="font-bold text-white">18/20</span>
                   </div>
                   <Progress value={90} className="h-2" />
-                  <div className="text-sm text-muted-foreground">90% completion rate</div>
+                  <div className="text-sm text-gray-400">90% completion rate</div>
 
                   <div className="flex items-center justify-between">
-                    <span>Average per Week</span>
-                    <span className="font-bold">4.5</span>
+                    <span className="text-gray-300">Average per Week</span>
+                    <span className="font-bold text-white">4.5</span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span>Longest Streak</span>
-                    <span className="font-bold">12 days</span>
+                    <span className="text-gray-300">Longest Streak</span>
+                    <span className="font-bold text-white">12 days</span>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Zap className="w-5 h-5" />
+                  <CardTitle className="flex items-center space-x-2 text-white">
+                    <Zap className="w-5 h-5 text-orange-400" />
                     <span>Weekly Goals</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm">Strength Training</span>
-                      <span className="text-sm font-medium">3/3</span>
+                      <span className="text-sm text-gray-300">Strength Training</span>
+                      <span className="text-sm font-medium text-white">3/3</span>
                     </div>
                     <Progress value={100} className="h-2" />
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm">Cardio Sessions</span>
-                      <span className="text-sm font-medium">2/2</span>
+                      <span className="text-sm text-gray-300">Cardio Sessions</span>
+                      <span className="text-sm font-medium text-white">2/2</span>
                     </div>
                     <Progress value={100} className="h-2" />
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm">Active Recovery</span>
-                      <span className="text-sm font-medium">1/2</span>
+                      <span className="text-sm text-gray-300">Active Recovery</span>
+                      <span className="text-sm font-medium text-white">1/2</span>
                     </div>
                     <Progress value={50} className="h-2" />
                   </div>
@@ -408,17 +442,17 @@ export default function ProgressTracking() {
             </div>
 
             {/* Workout Calendar */}
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardHeader>
-                <CardTitle>Workout Calendar</CardTitle>
-                <CardDescription>Your workout history at a glance</CardDescription>
+                <CardTitle className="text-white">Workout Calendar</CardTitle>
+                <CardDescription className="text-gray-300">Your workout history at a glance</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-48 bg-muted rounded-lg flex items-center justify-center">
+                <div className="h-48 bg-white/5 rounded-lg flex items-center justify-center border border-white/10">
                   <div className="text-center space-y-2">
-                    <Calendar className="w-12 h-12 text-muted-foreground mx-auto" />
-                    <p className="text-muted-foreground">Interactive workout calendar</p>
-                    <p className="text-sm text-muted-foreground">Green = Completed | Gray = Rest Day | Red = Missed</p>
+                    <Calendar className="w-12 h-12 text-orange-400 mx-auto" />
+                    <p className="text-gray-300">Interactive workout calendar</p>
+                    <p className="text-sm text-gray-400">Green = Completed | Gray = Rest Day | Red = Missed</p>
                   </div>
                 </div>
               </CardContent>
@@ -427,22 +461,22 @@ export default function ProgressTracking() {
 
           {/* Achievements */}
           <TabsContent value="achievements" className="space-y-6">
-            <h2 className="text-xl font-semibold">Achievements & Milestones</h2>
+            <h2 className="text-xl font-semibold text-white">Achievements & Milestones</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {mockAchievements.map((achievement) => (
-                <Card key={achievement.id} className="border-primary/20">
+                <Card key={achievement.id} className="bg-white/10 backdrop-blur-md border-orange-500/30 text-white">
                   <CardContent className="pt-6">
                     <div className="flex items-start space-x-4">
                       <div className="text-3xl">{achievement.icon}</div>
                       <div className="flex-1">
-                        <h3 className="font-semibold">{achievement.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">{achievement.description}</p>
+                        <h3 className="font-semibold text-white">{achievement.title}</h3>
+                        <p className="text-sm text-gray-300 mb-2">{achievement.description}</p>
                         <div className="flex items-center space-x-2">
-                          <Badge variant="outline" className="text-xs capitalize">
+                          <Badge variant="outline" className="text-xs capitalize border-orange-500/50 text-orange-300">
                             {achievement.category}
                           </Badge>
-                          <span className="text-xs text-muted-foreground">Unlocked {achievement.unlockedAt}</span>
+                          <span className="text-xs text-gray-400">Unlocked {achievement.unlockedAt}</span>
                         </div>
                       </div>
                     </div>
@@ -452,54 +486,54 @@ export default function ProgressTracking() {
             </div>
 
             {/* Next Achievements */}
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Target className="w-5 h-5" />
+                <CardTitle className="flex items-center space-x-2 text-white">
+                  <Target className="w-5 h-5 text-orange-400" />
                   <span>Next Achievements</span>
                 </CardTitle>
-                <CardDescription>Keep pushing to unlock these milestones</CardDescription>
+                <CardDescription className="text-gray-300">Keep pushing to unlock these milestones</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10">
                     <div className="flex items-center space-x-3">
                       <div className="text-2xl opacity-50">🏆</div>
                       <div>
-                        <div className="font-medium">Century Club</div>
-                        <div className="text-sm text-muted-foreground">Complete 100 total workouts</div>
+                        <div className="font-medium text-white">Century Club</div>
+                        <div className="text-sm text-gray-300">Complete 100 total workouts</div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm font-medium">45/100</div>
+                      <div className="text-sm font-medium text-white">45/100</div>
                       <Progress value={45} className="w-20 h-2 mt-1" />
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10">
                     <div className="flex items-center space-x-3">
                       <div className="text-2xl opacity-50">💎</div>
                       <div>
-                        <div className="font-medium">Diamond Streak</div>
-                        <div className="text-sm text-muted-foreground">Maintain a 30-day workout streak</div>
+                        <div className="font-medium text-white">Diamond Streak</div>
+                        <div className="text-sm text-gray-300">Maintain a 30-day workout streak</div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm font-medium">12/30</div>
+                      <div className="text-sm font-medium text-white">12/30</div>
                       <Progress value={40} className="w-20 h-2 mt-1" />
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10">
                     <div className="flex items-center space-x-3">
                       <div className="text-2xl opacity-50">🚀</div>
                       <div>
-                        <div className="font-medium">Strength Rocket</div>
-                        <div className="text-sm text-muted-foreground">Increase total 1RM by 100 lbs</div>
+                        <div className="font-medium text-white">Strength Rocket</div>
+                        <div className="text-sm text-gray-300">Increase total 1RM by 100 lbs</div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm font-medium">65/100</div>
+                      <div className="text-sm font-medium text-white">65/100</div>
                       <Progress value={65} className="w-20 h-2 mt-1" />
                     </div>
                   </div>

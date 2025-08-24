@@ -4,8 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import { Clock, Dumbbell, Target, TrendingUp, Zap } from "lucide-react"
+import { Clock, Dumbbell, Target, TrendingUp, Zap, BookOpen, BarChart3, Lightbulb } from "lucide-react"
 import Link from "next/link"
 import Navigation from "@/components/navigation"
 import OnboardingFlow from "@/components/onboarding-flow"
@@ -146,103 +145,113 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="min-h-screen bg-[#1d1c21]">
       <Navigation />
-      <div className="flex-1 p-6 pb-20 md:pb-6">
-        <div className="max-w-4xl mx-auto space-y-6">
-          {/* Header */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <img src="/images/pfxv-logo.png" alt="PFxV Logo" className="w-12 h-12 object-contain logo-3d" />
-              <div>
-                <h1 className="text-3xl font-bold">Welcome back{user?.name ? `, ${user.name}` : ""}</h1>
-                <p className="text-muted-foreground mt-1">Ready to crush today's workout?</p>
-              </div>
+      <div className="p-4 pb-20 md:pb-6">
+        <div className="max-w-sm mx-auto space-y-6">
+          <div className="text-center space-y-4">
+            <div className="flex justify-center">
+              <img src="/images/pfxv-logo.png" alt="PFxV" className="w-32 h-32 object-contain" />
             </div>
-            <Button onClick={() => setShowOnboarding(true)} variant="outline">
-              Update Goals
-            </Button>
+            <div>
+              <h1 className="text-2xl font-bold text-white">Hello, {user?.name || "David"}</h1>
+              <p className="text-slate-400 text-sm">Welcome back</p>
+            </div>
           </div>
 
-          {/* Today's Workout */}
-          <Card className="bg-white/10 backdrop-blur-md border border-cta/20 rounded-2xl">
-            <CardHeader>
+          <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 text-center">
+            <div className="space-y-2">
+              <p className="text-slate-400 text-sm">Current Value</p>
+              <div className="text-4xl font-bold text-white">${(weeklyStats.totalVolume * 0.1).toFixed(0)}</div>
+              <p className="text-slate-400 text-xs">
+                +${(weeklyStats.completedWorkouts * 15).toFixed(0)} • Since last week
+              </p>
+            </div>
+          </Card>
+
+          <div className="grid grid-cols-2 gap-4">
+            <Card className="bg-[#c0d7dd] border-0 rounded-2xl p-4 relative cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl">
+              <div className="absolute top-2 left-2">
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-[#1d1c21]" />
+                </div>
+              </div>
+              <div className="mt-8">
+                <div className="text-2xl font-bold text-[#1d1c21] mb-1">AI Coach</div>
+                <p className="text-[#1d1c21]/70 text-sm">Personal guidance</p>
+              </div>
+            </Card>
+
+            <Card className="bg-[#e6dff1] border-0 rounded-2xl p-4 relative cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl">
+              <div className="absolute top-2 left-2">
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <BookOpen className="w-4 h-4 text-[#1d1c21]" />
+                </div>
+              </div>
+              <div className="mt-8">
+                <div className="text-2xl font-bold text-[#1d1c21] mb-1">Learn & Grow</div>
+                <p className="text-[#1d1c21]/70 text-sm">Knowledge base</p>
+              </div>
+            </Card>
+
+            <Card className="bg-[#f2eee8] border-0 rounded-2xl p-4 relative cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl">
+              <div className="absolute top-2 left-2">
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <BarChart3 className="w-4 h-4 text-[#1d1c21]" />
+                </div>
+              </div>
+              <div className="mt-8">
+                <div className="text-2xl font-bold text-[#1d1c21] mb-1">Track Progress</div>
+                <p className="text-[#1d1c21]/70 text-sm">Monitor gains</p>
+              </div>
+            </Card>
+
+            <Card className="bg-[#c0d7dd] border-0 rounded-2xl p-4 relative cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl">
+              <div className="absolute top-2 left-2">
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <Lightbulb className="w-4 h-4 text-[#1d1c21]" />
+                </div>
+              </div>
+              <div className="mt-8">
+                <div className="text-2xl font-bold text-[#1d1c21] mb-1">Built with Science</div>
+                <p className="text-[#1d1c21]/70 text-sm">Evidence-based</p>
+              </div>
+            </Card>
+          </div>
+
+          <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
+            <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Dumbbell className="w-5 h-5" />
-                    <span>Today's Workout</span>
-                  </CardTitle>
-                  <CardDescription>Upper Body Strength • 45-60 min</CardDescription>
+                  <CardTitle className="text-white text-lg">Today's Workout</CardTitle>
+                  <CardDescription className="text-slate-400">Upper Body Strength</CardDescription>
                 </div>
-                <Badge variant="default">Ready</Badge>
+                <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">Ready</Badge>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                <span className="flex items-center space-x-1">
-                  <Target className="w-4 h-4" />
-                  <span>3 exercises</span>
-                </span>
-                <span className="flex items-center space-x-1">
+              <div className="flex items-center gap-4 text-sm text-slate-400">
+                <span className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  <span>45-60 min</span>
+                  45-60 min
                 </span>
-                <span className="flex items-center space-x-1">
-                  <Zap className="w-4 h-4" />
-                  <span>Intermediate</span>
+                <span className="flex items-center gap-1">
+                  <Target className="w-4 h-4" />3 exercises
                 </span>
               </div>
               <Link href="/workout">
-                <Button className="w-full" variant="cta">
+                <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white border-0 rounded-xl h-12 font-semibold">
                   Start Workout
                 </Button>
               </Link>
             </CardContent>
           </Card>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">This Week</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {weeklyStats.completedWorkouts}/{weeklyStats.totalWorkouts}
-                </div>
-                <p className="text-sm text-muted-foreground">Workouts completed</p>
-                <Progress value={(weeklyStats.completedWorkouts / weeklyStats.totalWorkouts) * 100} className="mt-2" />
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Current Streak</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-cta">{weeklyStats.currentStreak}</div>
-                <p className="text-sm text-muted-foreground">Days active</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total Volume</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{weeklyStats.totalVolume.toLocaleString()}</div>
-                <p className="text-sm text-muted-foreground">lbs this week</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Recent Activity */}
           <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+              <CardTitle className="text-white text-lg flex items-center gap-2">
                 <TrendingUp className="w-5 h-5" />
-                <span>Recent Activity</span>
+                Recent Activity
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -251,24 +260,24 @@ export default function DashboardPage() {
                   recentSessions.map((session) => (
                     <div
                       key={session.id}
-                      className="flex items-center justify-between p-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl"
                     >
                       <div>
-                        <div className="font-medium">{session.workout_name}</div>
-                        <div className="text-sm text-muted-foreground">
+                        <div className="font-medium text-white text-sm">{session.workout_name}</div>
+                        <div className="text-xs text-slate-400">
                           {formatDate(session.completed_at)} • {session.duration_minutes} min
                         </div>
                       </div>
-                      <Badge variant="outline" className="text-green-600 border-green-600">
+                      <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 text-xs">
                         Completed
                       </Badge>
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
+                  <div className="text-center py-8 text-slate-400">
                     <Dumbbell className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                    <p>No workouts completed yet</p>
-                    <p className="text-sm">Start your first workout to see your progress here!</p>
+                    <p className="text-sm">No workouts completed yet</p>
+                    <p className="text-xs">Start your first workout to see progress!</p>
                   </div>
                 )}
               </div>

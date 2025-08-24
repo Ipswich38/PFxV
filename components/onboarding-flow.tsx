@@ -1,8 +1,8 @@
 "use client"
 
 import React from "react"
-
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -44,6 +44,7 @@ export default function OnboardingFlow() {
     preferences: [],
     dislikes: "",
   })
+  const router = useRouter()
 
   const updateData = (field: keyof OnboardingData, value: any) => {
     setData((prev) => ({ ...prev, [field]: value }))
@@ -71,21 +72,22 @@ export default function OnboardingFlow() {
 
   const handleComplete = () => {
     console.log("[v0] Onboarding completed with data:", data)
-    // Here we would typically save the data and redirect to the main dashboard
-    alert("Onboarding completed! Your personalized program is being generated.")
+    localStorage.setItem("pfxv_onboarding_data", JSON.stringify(data))
+    localStorage.setItem("pfxv_onboarding_completed", "true")
+    router.push("/dashboard")
   }
 
   const progress = (currentStep / steps.length) * 100
 
   return (
-    <div className="min-h-screen bg-background p-4">
+    <div className="min-h-screen bg-[#1d1c21] p-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">
-            Welcome to PF<span className="text-primary">x</span>V
+          <h1 className="text-3xl font-bold mb-2 text-white">
+            Welcome to PF<span className="text-[#FF4B33]">x</span>V
           </h1>
-          <p className="text-muted-foreground">Let's personalize your fitness journey</p>
+          <p className="text-gray-400">Let's personalize your fitness journey</p>
         </div>
 
         {/* Progress */}
@@ -116,9 +118,9 @@ export default function OnboardingFlow() {
         </div>
 
         {/* Step Content */}
-        <Card>
+        <Card className="bg-white/10 backdrop-blur-md border-white/20 rounded-2xl">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
+            <CardTitle className="flex items-center space-x-2 text-white">
               {React.createElement(steps[currentStep - 1].icon, { className: "w-5 h-5" })}
               <span>{steps[currentStep - 1].title}</span>
             </CardTitle>
@@ -126,7 +128,9 @@ export default function OnboardingFlow() {
           <CardContent className="space-y-6">
             {currentStep === 1 && (
               <div className="space-y-4">
-                <CardDescription>What are your primary fitness goals? (Select all that apply)</CardDescription>
+                <CardDescription className="text-gray-300">
+                  What are your primary fitness goals? (Select all that apply)
+                </CardDescription>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     "Build Muscle",
@@ -144,7 +148,7 @@ export default function OnboardingFlow() {
                         checked={data.goals.includes(goal)}
                         onCheckedChange={() => handleArrayToggle("goals", goal)}
                       />
-                      <Label htmlFor={goal} className="text-sm">
+                      <Label htmlFor={goal} className="text-sm text-white">
                         {goal}
                       </Label>
                     </div>
@@ -156,7 +160,7 @@ export default function OnboardingFlow() {
             {currentStep === 2 && (
               <div className="space-y-6">
                 <div>
-                  <Label className="text-base font-medium">What's your fitness experience level?</Label>
+                  <Label className="text-base font-medium text-white">What's your fitness experience level?</Label>
                   <RadioGroup
                     value={data.experience}
                     onValueChange={(value) => updateData("experience", value)}
@@ -170,14 +174,16 @@ export default function OnboardingFlow() {
                     ].map((option) => (
                       <div key={option.value} className="flex items-center space-x-2">
                         <RadioGroupItem value={option.value} id={option.value} />
-                        <Label htmlFor={option.value}>{option.label}</Label>
+                        <Label htmlFor={option.value} className="text-white">
+                          {option.label}
+                        </Label>
                       </div>
                     ))}
                   </RadioGroup>
                 </div>
 
                 <div>
-                  <Label className="text-base font-medium">Do you have gym access?</Label>
+                  <Label className="text-base font-medium text-white">Do you have gym access?</Label>
                   <RadioGroup
                     value={data.gymAccess}
                     onValueChange={(value) => updateData("gymAccess", value)}
@@ -191,14 +197,18 @@ export default function OnboardingFlow() {
                     ].map((option) => (
                       <div key={option.value} className="flex items-center space-x-2">
                         <RadioGroupItem value={option.value} id={option.value} />
-                        <Label htmlFor={option.value}>{option.label}</Label>
+                        <Label htmlFor={option.value} className="text-white">
+                          {option.label}
+                        </Label>
                       </div>
                     ))}
                   </RadioGroup>
                 </div>
 
                 <div>
-                  <Label className="text-base font-medium">Available Equipment (Select all that apply)</Label>
+                  <Label className="text-base font-medium text-white">
+                    Available Equipment (Select all that apply)
+                  </Label>
                   <div className="grid grid-cols-2 gap-3 mt-3">
                     {[
                       "Dumbbells",
@@ -216,7 +226,7 @@ export default function OnboardingFlow() {
                           checked={data.equipment.includes(equipment)}
                           onCheckedChange={() => handleArrayToggle("equipment", equipment)}
                         />
-                        <Label htmlFor={equipment} className="text-sm">
+                        <Label htmlFor={equipment} className="text-sm text-white">
                           {equipment}
                         </Label>
                       </div>
@@ -229,7 +239,9 @@ export default function OnboardingFlow() {
             {currentStep === 3 && (
               <div className="space-y-6">
                 <div>
-                  <Label className="text-base font-medium">How much time can you dedicate per workout?</Label>
+                  <Label className="text-base font-medium text-white">
+                    How much time can you dedicate per workout?
+                  </Label>
                   <RadioGroup
                     value={data.timeAvailable}
                     onValueChange={(value) => updateData("timeAvailable", value)}
@@ -244,14 +256,16 @@ export default function OnboardingFlow() {
                     ].map((option) => (
                       <div key={option.value} className="flex items-center space-x-2">
                         <RadioGroupItem value={option.value} id={option.value} />
-                        <Label htmlFor={option.value}>{option.label}</Label>
+                        <Label htmlFor={option.value} className="text-white">
+                          {option.label}
+                        </Label>
                       </div>
                     ))}
                   </RadioGroup>
                 </div>
 
                 <div>
-                  <Label className="text-base font-medium">How many days per week can you work out?</Label>
+                  <Label className="text-base font-medium text-white">How many days per week can you work out?</Label>
                   <RadioGroup
                     value={data.daysPerWeek}
                     onValueChange={(value) => updateData("daysPerWeek", value)}
@@ -266,7 +280,9 @@ export default function OnboardingFlow() {
                     ].map((option) => (
                       <div key={option.value} className="flex items-center space-x-2">
                         <RadioGroupItem value={option.value} id={option.value} />
-                        <Label htmlFor={option.value}>{option.label}</Label>
+                        <Label htmlFor={option.value} className="text-white">
+                          {option.label}
+                        </Label>
                       </div>
                     ))}
                   </RadioGroup>
@@ -277,7 +293,7 @@ export default function OnboardingFlow() {
             {currentStep === 4 && (
               <div className="space-y-6">
                 <div>
-                  <Label htmlFor="limitations" className="text-base font-medium">
+                  <Label htmlFor="limitations" className="text-base font-medium text-white">
                     Do you have any injuries, limitations, or health conditions we should know about?
                   </Label>
                   <Textarea
@@ -290,7 +306,9 @@ export default function OnboardingFlow() {
                 </div>
 
                 <div>
-                  <Label className="text-base font-medium">Exercise Preferences (Select all that apply)</Label>
+                  <Label className="text-base font-medium text-white">
+                    Exercise Preferences (Select all that apply)
+                  </Label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
                     {[
                       "Compound Movements",
@@ -308,7 +326,7 @@ export default function OnboardingFlow() {
                           checked={data.preferences.includes(preference)}
                           onCheckedChange={() => handleArrayToggle("preferences", preference)}
                         />
-                        <Label htmlFor={preference} className="text-sm">
+                        <Label htmlFor={preference} className="text-sm text-white">
                           {preference}
                         </Label>
                       </div>
@@ -317,7 +335,7 @@ export default function OnboardingFlow() {
                 </div>
 
                 <div>
-                  <Label htmlFor="dislikes" className="text-base font-medium">
+                  <Label htmlFor="dislikes" className="text-base font-medium text-white">
                     Any exercises you particularly dislike or want to avoid?
                   </Label>
                   <Textarea

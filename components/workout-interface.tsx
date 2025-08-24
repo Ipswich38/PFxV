@@ -175,26 +175,34 @@ export default function WorkoutInterface() {
   const workoutProgress = (workout.exercises.filter((e) => e.completed).length / workout.exercises.length) * 100
 
   return (
-    <div className="min-h-screen bg-background p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
       <div className="max-w-4xl mx-auto space-y-6">
+        <div className="flex items-center justify-center mb-6">
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-3">
+            <img src="/images/pfxv-logo.png" alt="PFxV Logo" className="w-12 h-12 object-contain" />
+          </div>
+        </div>
+
         {/* Workout Header */}
-        <Card>
+        <Card className="bg-white/10 backdrop-blur-md border border-white/20">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-2xl">{workout.name}</CardTitle>
-                <CardDescription className="flex items-center space-x-4 mt-2">
+                <CardTitle className="text-2xl text-white">{workout.name}</CardTitle>
+                <CardDescription className="flex items-center space-x-4 mt-2 text-gray-300">
                   <span className="flex items-center space-x-1">
                     <Clock className="w-4 h-4" />
                     <span>{workout.duration}</span>
                   </span>
-                  <Badge variant="secondary">{workout.difficulty}</Badge>
+                  <Badge variant="secondary" className="bg-cta/20 text-cta border-cta/30">
+                    {workout.difficulty}
+                  </Badge>
                   <span>{workout.date}</span>
                 </CardDescription>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-primary">{Math.round(workoutProgress)}%</div>
-                <div className="text-sm text-muted-foreground">Complete</div>
+                <div className="text-2xl font-bold text-cta">{Math.round(workoutProgress)}%</div>
+                <div className="text-sm text-gray-300">Complete</div>
               </div>
             </div>
             <Progress value={workoutProgress} className="mt-4" />
@@ -203,12 +211,16 @@ export default function WorkoutInterface() {
 
         {/* Rest Timer */}
         {isResting && (
-          <Card className="border-primary">
+          <Card className="border-cta bg-white/10 backdrop-blur-md border border-white/20">
             <CardContent className="pt-6">
               <div className="text-center space-y-4">
-                <div className="text-4xl font-bold text-primary">{formatTime(restTimer)}</div>
-                <div className="text-muted-foreground">Rest between sets</div>
-                <Button variant="outline" onClick={() => setIsResting(false)} className="flex items-center space-x-2">
+                <div className="text-4xl font-bold text-cta">{formatTime(restTimer)}</div>
+                <div className="text-gray-300">Rest between sets</div>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsResting(false)}
+                  className="flex items-center space-x-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
+                >
                   <Play className="w-4 h-4" />
                   <span>Skip Rest</span>
                 </Button>
@@ -219,17 +231,17 @@ export default function WorkoutInterface() {
 
         {/* Current Exercise */}
         {currentExercise && (
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-md border border-white/20">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="flex items-center space-x-2">
+                  <CardTitle className="flex items-center space-x-2 text-white">
                     <Dumbbell className="w-5 h-5" />
                     <span>{currentExercise.name}</span>
                   </CardTitle>
                   <div className="flex items-center space-x-2 mt-2">
                     {currentExercise.targetMuscles.map((muscle) => (
-                      <Badge key={muscle} variant="outline" className="text-xs">
+                      <Badge key={muscle} variant="outline" className="text-xs bg-cta/10 text-cta border-cta/30">
                         {muscle}
                       </Badge>
                     ))}
@@ -239,7 +251,7 @@ export default function WorkoutInterface() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowInstructions(!showInstructions)}
-                  className="flex items-center space-x-1"
+                  className="flex items-center space-x-1 text-white hover:bg-white/10"
                 >
                   <Info className="w-4 h-4" />
                   <span>Instructions</span>
@@ -249,15 +261,15 @@ export default function WorkoutInterface() {
             <CardContent className="space-y-4">
               {/* Exercise Instructions */}
               {showInstructions && (
-                <div className="bg-muted p-4 rounded-lg space-y-3">
-                  <h4 className="font-medium">Instructions:</h4>
-                  <ol className="list-decimal list-inside space-y-1 text-sm">
+                <div className="bg-white/5 backdrop-blur-sm p-4 rounded-lg space-y-3 border border-white/10">
+                  <h4 className="font-medium text-white">Instructions:</h4>
+                  <ol className="list-decimal list-inside space-y-1 text-sm text-gray-300">
                     {currentExercise.instructions.map((instruction, index) => (
                       <li key={index}>{instruction}</li>
                     ))}
                   </ol>
-                  <div className="bg-primary/10 p-3 rounded border-l-4 border-primary">
-                    <p className="text-sm font-medium">💡 Tip: {currentExercise.tips}</p>
+                  <div className="bg-cta/10 p-3 rounded border-l-4 border-cta">
+                    <p className="text-sm font-medium text-cta">💡 Tip: {currentExercise.tips}</p>
                   </div>
                 </div>
               )}
@@ -265,27 +277,37 @@ export default function WorkoutInterface() {
               {/* Set Tracking */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <h4 className="font-medium">
+                  <h4 className="font-medium text-white">
                     Set {currentSetIndex + 1} of {currentExercise.sets}
                   </h4>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-gray-300">
                     Target: {currentExercise.reps} reps @ {currentExercise.weight}
                   </div>
                 </div>
 
                 {/* Set Input */}
-                <div className="flex items-center space-x-4 p-4 bg-muted rounded-lg">
+                <div className="flex items-center space-x-4 p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
                   <div className="flex-1">
-                    <Label htmlFor="weight" className="text-sm">
+                    <Label htmlFor="weight" className="text-sm text-white">
                       Weight (lbs)
                     </Label>
-                    <Input id="weight" type="number" defaultValue={currentSet?.weight || 0} className="mt-1" />
+                    <Input
+                      id="weight"
+                      type="number"
+                      defaultValue={currentSet?.weight || 0}
+                      className="mt-1 bg-white/10 border-white/20 text-white"
+                    />
                   </div>
                   <div className="flex-1">
-                    <Label htmlFor="reps" className="text-sm">
+                    <Label htmlFor="reps" className="text-sm text-white">
                       Reps
                     </Label>
-                    <Input id="reps" type="number" defaultValue={currentSet?.reps || 0} className="mt-1" />
+                    <Input
+                      id="reps"
+                      type="number"
+                      defaultValue={currentSet?.reps || 0}
+                      className="mt-1 bg-white/10 border-white/20 text-white"
+                    />
                   </div>
                   <Button
                     onClick={() => {
@@ -293,7 +315,8 @@ export default function WorkoutInterface() {
                       const repsInput = document.getElementById("reps") as HTMLInputElement
                       completeSet(Number.parseInt(repsInput.value), Number.parseInt(weightInput.value))
                     }}
-                    className="flex items-center space-x-2 mt-6"
+                    className="flex items-center space-x-2 mt-6 bg-cta hover:bg-cta/90 text-white"
+                    variant="cta"
                   >
                     <Check className="w-4 h-4" />
                     <span>Complete Set</span>
@@ -302,12 +325,14 @@ export default function WorkoutInterface() {
 
                 {/* Previous Sets */}
                 <div className="space-y-2">
-                  <h5 className="text-sm font-medium text-muted-foreground">Previous Sets:</h5>
+                  <h5 className="text-sm font-medium text-gray-300">Previous Sets:</h5>
                   {currentExercise.setData.map((set, index) => (
                     <div
                       key={index}
-                      className={`flex items-center justify-between p-2 rounded text-sm ${
-                        set.completed ? "bg-primary/10 text-primary" : "bg-muted/50"
+                      className={`flex items-center justify-between p-2 rounded text-sm backdrop-blur-sm ${
+                        set.completed
+                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                          : "bg-white/5 text-gray-300 border border-white/10"
                       }`}
                     >
                       <span>Set {index + 1}</span>
@@ -322,31 +347,31 @@ export default function WorkoutInterface() {
         )}
 
         {/* Exercise List */}
-        <Card>
+        <Card className="bg-white/10 backdrop-blur-md border border-white/20">
           <CardHeader>
-            <CardTitle>Today's Exercises</CardTitle>
+            <CardTitle className="text-white">Today's Exercises</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {workout.exercises.map((exercise, index) => (
                 <div
                   key={exercise.id}
-                  className={`flex items-center justify-between p-3 rounded-lg border ${
+                  className={`flex items-center justify-between p-3 rounded-lg border backdrop-blur-sm ${
                     index === currentExerciseIndex
-                      ? "border-primary bg-primary/5"
+                      ? "border-cta bg-cta/10"
                       : exercise.completed
-                        ? "border-green-500 bg-green-500/5"
-                        : "border-border"
+                        ? "border-emerald-500 bg-emerald-500/10"
+                        : "border-white/20 bg-white/5"
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center ${
                         exercise.completed
-                          ? "bg-green-500 text-white"
+                          ? "bg-emerald-500 text-white"
                           : index === currentExerciseIndex
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted"
+                            ? "bg-cta text-white"
+                            : "bg-white/10 text-gray-300"
                       }`}
                     >
                       {exercise.completed ? (
@@ -356,13 +381,13 @@ export default function WorkoutInterface() {
                       )}
                     </div>
                     <div>
-                      <div className="font-medium">{exercise.name}</div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="font-medium text-white">{exercise.name}</div>
+                      <div className="text-sm text-gray-300">
                         {exercise.sets} sets × {exercise.reps} reps
                       </div>
                     </div>
                   </div>
-                  {index === currentExerciseIndex && <Badge variant="default">Current</Badge>}
+                  {index === currentExerciseIndex && <Badge className="bg-cta text-white">Current</Badge>}
                 </div>
               ))}
             </div>
@@ -371,11 +396,14 @@ export default function WorkoutInterface() {
 
         {/* Workout Actions */}
         <div className="flex justify-center space-x-4">
-          <Button variant="outline" className="flex items-center space-x-2 bg-transparent">
+          <Button
+            variant="outline"
+            className="flex items-center space-x-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
+          >
             <RefreshCw className="w-4 h-4" />
             <span>Restart Workout</span>
           </Button>
-          <Button className="flex items-center space-x-2">
+          <Button className="flex items-center space-x-2 bg-cta hover:bg-cta/90 text-white" variant="cta">
             <Target className="w-4 h-4" />
             <span>Finish Workout</span>
           </Button>

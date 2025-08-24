@@ -35,18 +35,23 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  /* Added CTA color */
-  --cta: oklch(0.65 0.25 25);
+  /* Added reference design card colors */
+  --card-mint: #c0d7dd;
+  --card-purple: #e6dff1;
+  --card-peach: #f2eee8;
+  --card-blue: #d4e8f0;
+  --card-text: #1d1c21;
+  --cta: #ff4b33;
   --cta-foreground: oklch(1 0 0);
 }
 
 .dark {
-  /* Updated dark background to requested color #202c22 */
-  --background: oklch(0.145 0.05 140);
+  /* Updated to exact reference background color */
+  --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0.05 140);
+  --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0.05 140);
+  --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.985 0 0);
   --primary-foreground: oklch(0.205 0 0);
@@ -66,23 +71,14 @@
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0.05 140);
+  --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0.05 140);
+  --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0.05 140);
+  --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
 }
 
 @theme inline {
@@ -126,7 +122,34 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  /* Added CTA color to theme */
   --color-cta: var(--cta);
   --color-cta-foreground: var(--cta-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Added reference design card color utilities */
+@layer utilities {
+  .bg-card-mint {
+    background-color: var(--card-mint);
+  }
+  .bg-card-purple {
+    background-color: var(--card-purple);
+  }
+  .bg-card-peach {
+    background-color: var(--card-peach);
+  }
+  .bg-card-blue {
+    background-color: var(--card-blue);
+  }
+  .text-card {
+    color: var(--card-text);
+  }
 }

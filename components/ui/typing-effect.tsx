@@ -11,6 +11,7 @@ interface TypingEffectProps {
 export function TypingEffect({ text, speed = 50, className = "" }: TypingEffectProps) {
   const [displayText, setDisplayText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isComplete, setIsComplete] = useState(false)
 
   useEffect(() => {
     if (currentIndex < text.length) {
@@ -20,13 +21,23 @@ export function TypingEffect({ text, speed = 50, className = "" }: TypingEffectP
       }, speed)
 
       return () => clearTimeout(timeout)
+    } else if (!isComplete) {
+      setIsComplete(true)
+
+      const restartTimeout = setTimeout(() => {
+        setDisplayText("")
+        setCurrentIndex(0)
+        setIsComplete(false)
+      }, 3000)
+
+      return () => clearTimeout(restartTimeout)
     }
-  }, [currentIndex, text, speed])
+  }, [currentIndex, text, speed, isComplete])
 
   return (
     <span className={className}>
       {displayText}
-      <span className="animate-pulse">|</span>
+      {!isComplete && <span className="animate-pulse">|</span>}
     </span>
   )
 }
