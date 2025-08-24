@@ -126,14 +126,14 @@ export default function SignUpPage() {
               />
             </div>
             {error && <p className="text-red-400 text-sm">{error}</p>}
-            <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700" disabled={isLoading}>
+            <Button type="submit" className="w-full bg-[#FF4B33] hover:bg-[#FF4B33]/90 text-white" disabled={isLoading}>
               {isLoading ? "Creating account..." : "Create Account"}
             </Button>
           </form>
           <div className="mt-6 text-center">
             <p className="text-gray-400 text-sm">
               Already have an account?{" "}
-              <Link href="/auth/login" className="text-emerald-400 hover:text-emerald-300">
+              <Link href="/auth/login" className="text-[#FF4B33] hover:text-[#FF4B33]/80">
                 Sign in
               </Link>
             </p>

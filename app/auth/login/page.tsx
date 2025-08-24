@@ -39,8 +39,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-gray-900 border-gray-800">
+    <div className="min-h-screen bg-[#202c22] flex items-center justify-center p-4">
+      <Card className="w-full max-w-md bg-gray-900/80 backdrop-blur-md border-gray-800/50 rounded-2xl">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold text-white">Welcome Back</CardTitle>
           <CardDescription className="text-gray-400">Sign in to continue your fitness journey</CardDescription>
@@ -57,7 +57,7 @@ export default function LoginPage() {
                 placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-gray-800 border-gray-700 text-white"
+                className="bg-gray-800/50 border-gray-700/50 text-white rounded-xl backdrop-blur-sm"
                 required
               />
             </div>
@@ -70,19 +70,23 @@ export default function LoginPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-gray-800 border-gray-700 text-white"
+                className="bg-gray-800/50 border-gray-700/50 text-white rounded-xl backdrop-blur-sm"
                 required
               />
             </div>
             {error && <p className="text-red-400 text-sm">{error}</p>}
-            <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700" disabled={isLoading}>
+            <Button
+              type="submit"
+              className="w-full bg-[#FF4B33] hover:bg-[#FF4B33]/90 text-white rounded-xl"
+              disabled={isLoading}
+            >
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
           <div className="mt-6 text-center">
             <p className="text-gray-400 text-sm">
               Don't have an account?{" "}
-              <Link href="/auth/sign-up" className="text-emerald-400 hover:text-emerald-300">
+              <Link href="/auth/sign-up" className="text-[#FF4B33] hover:text-[#FF4B33]/80">
                 Sign up
               </Link>
             </p>
