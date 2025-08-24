@@ -3,6 +3,7 @@
 import React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/auth-context"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -45,6 +46,7 @@ export default function OnboardingFlow() {
     dislikes: "",
   })
   const router = useRouter()
+  const { saveOnboardingData } = useAuth()
 
   const updateData = (field: keyof OnboardingData, value: any) => {
     setData((prev) => ({ ...prev, [field]: value }))
@@ -70,20 +72,32 @@ export default function OnboardingFlow() {
     }
   }
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     console.log("[v0] Complete Setup button clicked")
     console.log("[v0] Onboarding completed with data:", data)
 
     try {
-      localStorage.setItem("pfxv_onboarding_data", JSON.stringify(data))
-      localStorage.setItem("pfxv_onboarding_completed", "true")
-      console.log("[v0] Data saved to localStorage successfully")
+      // Save to Supabase database
+      const success = await saveOnboardingData(data)
 
-      console.log("[v0] Attempting to navigate to dashboard...")
-      router.push("/dashboard")
-      console.log("[v0] Navigation command executed")
+      if (success) {
+        console.log("[v0] Data saved to Supabase successfully")
+        console.log("[v0] Attempting to navigate to dashboard...")
+        router.push("/dashboard")
+        console.log("[v0] Navigation command executed")
+      } else {
+        console.error("[v0] Failed to save onboarding data")
+        // Fallback to localStorage for offline capability
+        localStorage.setItem("pfxv_onboarding_data", JSON.stringify(data))
+        localStorage.setItem("pfxv_onboarding_completed", "true")
+        router.push("/dashboard")
+      }
     } catch (error) {
       console.error("[v0] Error during completion:", error)
+      // Fallback to localStorage
+      localStorage.setItem("pfxv_onboarding_data", JSON.stringify(data))
+      localStorage.setItem("pfxv_onboarding_completed", "true")
+      router.push("/dashboard")
     }
   }
 

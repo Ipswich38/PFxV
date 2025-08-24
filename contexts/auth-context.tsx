@@ -11,6 +11,26 @@ interface User {
   name: string
   fitnessLevel?: "beginner" | "intermediate" | "advanced"
   goals?: string[]
+  experience?: string
+  equipment?: string[]
+  gymAccess?: string
+  timeAvailable?: string
+  daysPerWeek?: string
+  limitations?: string
+  preferences?: string[]
+  dislikes?: string
+  // Sports science focused metrics
+  bodyWeight?: number
+  height?: number
+  age?: number
+  activityLevel?: string
+  injuryHistory?: string[]
+  fitnessAssessment?: {
+    pushUps?: number
+    plankTime?: number
+    flexibility?: string
+    cardioLevel?: string
+  }
 }
 
 interface AuthContextType {
@@ -19,6 +39,8 @@ interface AuthContextType {
   signup: (email: string, password: string, name: string) => Promise<boolean>
   logout: () => void
   isLoading: boolean
+  updateProfile: (profileData: Partial<User>) => Promise<boolean>
+  saveOnboardingData: (onboardingData: any) => Promise<boolean>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -70,6 +92,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       name: profile?.display_name || supabaseUser.email!.split("@")[0],
       fitnessLevel: (onboarding?.experience_level as "beginner" | "intermediate" | "advanced") || "beginner",
       goals: onboarding?.fitness_goals || [],
+      experience: onboarding?.experience_level || "",
+      equipment: onboarding?.available_equipment || [],
+      gymAccess: onboarding?.gym_access || "",
+      timeAvailable: onboarding?.time_available || "",
+      daysPerWeek: onboarding?.days_per_week || "",
+      limitations: onboarding?.limitations || "",
+      preferences: onboarding?.exercise_preferences || [],
+      dislikes: onboarding?.exercise_dislikes || "",
+      bodyWeight: profile?.body_weight || null,
+      height: profile?.height || null,
+      age: profile?.age || null,
+      activityLevel: profile?.activity_level || "",
+      injuryHistory: profile?.injury_history || [],
+      fitnessAssessment: profile?.fitness_assessment || {},
     })
   }
 
@@ -115,7 +151,89 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null)
   }
 
-  return <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>{children}</AuthContext.Provider>
+  const saveOnboardingData = async (onboardingData: any): Promise<boolean> => {
+    if (!user) return false
+
+    try {
+      const { error } = await supabase.from("onboarding_data").upsert({
+        id: user.id,
+        fitness_goals: onboardingData.goals,
+        experience_level: onboardingData.experience,
+        available_equipment: onboardingData.equipment,
+        gym_access: onboardingData.gymAccess,
+        time_available: onboardingData.timeAvailable,
+        days_per_week: onboardingData.daysPerWeek,
+        limitations: onboardingData.limitations,
+        exercise_preferences: onboardingData.preferences,
+        exercise_dislikes: onboardingData.dislikes,
+        updated_at: new Date().toISOString(),
+      })
+
+      if (!error) {
+        // Reload user profile to reflect changes
+        const {
+          data: { user: supabaseUser },
+        } = await supabase.auth.getUser()
+        if (supabaseUser) {
+          await loadUserProfile(supabaseUser)
+        }
+      }
+
+      return !error
+    } catch (error) {
+      console.error("Error saving onboarding data:", error)
+      return false
+    }
+  }
+
+  const updateProfile = async (profileData: Partial<User>): Promise<boolean> => {
+    if (!user) return false
+
+    try {
+      const { error } = await supabase.from("profiles").upsert({
+        id: user.id,
+        display_name: profileData.name || user.name,
+        body_weight: profileData.bodyWeight,
+        height: profileData.height,
+        age: profileData.age,
+        activity_level: profileData.activityLevel,
+        injury_history: profileData.injuryHistory,
+        fitness_assessment: profileData.fitnessAssessment,
+        updated_at: new Date().toISOString(),
+      })
+
+      if (!error) {
+        // Reload user profile to reflect changes
+        const {
+          data: { user: supabaseUser },
+        } = await supabase.auth.getUser()
+        if (supabaseUser) {
+          await loadUserProfile(supabaseUser)
+        }
+      }
+
+      return !error
+    } catch (error) {
+      console.error("Error updating profile:", error)
+      return false
+    }
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        signup,
+        logout,
+        isLoading,
+        updateProfile,
+        saveOnboardingData,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export function useAuth() {
